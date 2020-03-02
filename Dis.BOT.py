@@ -26,7 +26,6 @@ async def on_ready():
 # Выдоча роли при добавлении реакции
 @client.event
 async def on_raw_reaction_add(payload):
-    global emoji
     channel = client.get_channel(config.TC_ID)
     message = await channel.fetch_message(payload.message_id)
     member = utils.get(message.guild.members, id=payload.user_id)
