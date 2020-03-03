@@ -299,6 +299,7 @@ async def r_role(ctx, member: discord.Member, *, reason=None):
 
 
 @client.command()
+@commands.has_permissions(administrator=True)
 async def BAN(ctx, member: discord.Member):
     await ctx.channel.purge(limit=1)
 
