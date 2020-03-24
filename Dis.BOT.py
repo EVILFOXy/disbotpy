@@ -175,7 +175,8 @@ async def ban(ctx, member: discord.Member, arg, *, reason):
             
             if isban == True:
                 for i in range(int(arg), 0, -1):
-                    await asyncio.sleep(10)
+                    await asyncio.sleep(1)
+                    await ctx.send('sleep')
                 isban = False
                 
             if isban == False:
