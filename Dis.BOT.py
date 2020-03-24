@@ -132,7 +132,7 @@ async def kick(ctx, member: discord.Member, *, reason=None):
 # бан пользователя на сервере [`ban {пользователь} {причина}]
 @client.command()
 @commands.has_permissions(administrator=True)
-async def ban(ctx, member: discord.Member, arg, reason, *):
+async def ban(ctx, member: discord.Member, arg, *, reason):
     await ctx.channel.purge(limit=1)
 
     # сообщение которое будет отправлено в случае бана:
