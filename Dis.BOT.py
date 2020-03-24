@@ -170,24 +170,29 @@ async def ban(ctx, member: discord.Member, arg, *, reason):
             await member.ban(reason=reason)
             await ctx.send(embed=emb_s)
             await member.send(embed=emb_m)
+            isban = True
             print('[SUCCESS] User {} has been baned by {}, term: {} min'.format(member, ctx.author, arg))
+            
+            if isban == True:
+                for i in range(int(arg), 0, -1):
+                    await asyncio.sleep(10)
+                isban = False
+                
+            if isban == False:
 
-            for i in range(int(arg), 0, -1):
-                await asyncio.sleep(10)
+                # сообщение отправляемое на сервер
+                emb_s = discord.Embed(title='Был(а) разблокирован(a) на сервере', color=discord.Color.green())
+                emb_s.set_author(name=member.name, icon_url=member.avatar_url)
 
-            # сообщение отправляемое на сервер
-            emb_s = discord.Embed(title='Был(а) разблокирован(a) на сервере', color=discord.Color.green())
-            emb_s.set_author(name=member.name, icon_url=member.avatar_url)
+                # сообщение отправляемое пользователю
+                emb_m = discord.Embed(title='Вы были разблокированны на сервере {}'.format(ctx.guild),
+                                      color=discord.Color.green())
 
-            # сообщение отправляемое пользователю
-            emb_m = discord.Embed(title='Вы были разблокированны на сервере {}'.format(ctx.guild),
-                                  color=discord.Color.green())
+                await ctx.guild.unban(member)
+                await ctx.send(embed=emb_s)
+                await member.send(embed=emb_m)
 
-            await ctx.guild.unban(member)
-            await ctx.send(embed=emb_s)
-            await member.send(embed=emb_m)
-
-            print('[SUCCESS] User {} has been unbaned'.format(member))
+                print('[SUCCESS] User {} has been unbaned'.format(member))
 
     else:
         await ctx.send(embed=emb_self_ban)
