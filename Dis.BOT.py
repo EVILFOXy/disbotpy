@@ -164,7 +164,7 @@ async def ban(ctx, member: discord.Member, arg, *, reason):
             emb_m = discord.Embed(title='Вы были временно заблокированы на сервере {},\
             срок блокировки {} мин'.format(ctx.guild, arg), color=discord.Color.red())
             emb_m.add_field(name='Дата блокировки: {}'.format(datetime.datetime.now()),
-                            value='Причина блокировки: {}.'.format(reason))
+                            value='Причина блокировкии =>: {}.'.format(reason))
             emb_m.set_footer(text='Администратор: {}'.format(ctx.author.name), icon_url=ctx.author.avatar_url)
 
             await member.ban(reason=reason)
