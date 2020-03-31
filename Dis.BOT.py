@@ -134,7 +134,11 @@ async def kick(ctx, member: discord.Member, *, reason=None):
 @commands.has_permissions(administrator=True)
 async def ban(ctx, member: discord.Member, arg, *, reason):
     await ctx.channel.purge(limit=1)
-
+    
+    emb_t = discord.Embed(title='Функция "ban" временно недоступна!', color = discord.Color.red())
+    await ctx.send(embed=emb_t)
+    
+"""
     # сообщение которое будет отправлено в случае бана:
     # на сервер(в чат где была написана комманда)
     emb_s = discord.Embed(title='Был(а) заблокирован(a) на сервере', color=discord.Color.red())
@@ -199,7 +203,7 @@ async def ban(ctx, member: discord.Member, arg, *, reason):
     else:
         await ctx.send(embed=emb_self_ban)
         print('[ERROR] {} try ban himself'.format(ctx.author))
-
+"""
 
 # Разбан пользователя на сервере [`unban {пользователь}]
 @client.command()
