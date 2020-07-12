@@ -381,21 +381,11 @@ async def on_member_remove(member):
 
 @client.event
 async def on_member_update(before, after):
-    global Online_m
-    members_count_channel = client.get_channel(731402118438846484)
-    print('1 - step')
     Online_m = '💚 Online: ' + str(
         sum([0 if member.status == discord.Status.offline else 1 for member in after.guild.members])) + ' 💚'
-    print('2 - step: ' + Online_m)
-    await members_count_channel.edit(name=Online_m)
-    print('end')
-
-
-@client.command()
-async def o(ctx):
-    members_count_channel = client.get_channel(731402118438846484)
-    await members_count_channel.edit(name=Online_m)
-    await ctx.send(Online_m)
+    members_count_channel = client.get_channel(731773383519502356)
+    message = await members_count_channel.fetch_message(731775266921250818)
+    await message.edit(content=Online_m)
 
 
 # ---------------------------------------------------------------------------------------------------------------------
