@@ -21,6 +21,7 @@ game = cycle(['Hanime.tv', 'anime.tvH', 'nime.tvHa', 'ime.tvHan', 'me.tvHani', '
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
     status.start()
+    _rain.start()
     # изменяет статус бота
     # game = discord.Game("Hanime.tv")
     # await client.change_presence(status=discord.Status.idle, activity=game)
