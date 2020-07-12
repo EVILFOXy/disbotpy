@@ -6,8 +6,7 @@ import asyncio
 from Data import def_random, config, Gifs
 import os
 
-# TOKEN = os.environ.get('TOKEN')
-TOKEN = 'NjY5OTQ0NDg5NzIwMTUyMDc2.XinSvg.uM9KXFIMt1HpqCRCUBXaWCiSQVU'
+TOKEN = os.environ.get('TOKEN')
 prefix = '`'
 client = commands.Bot(command_prefix=prefix)
 client.remove_command('help')
