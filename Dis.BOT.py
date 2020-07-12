@@ -12,7 +12,7 @@ prefix = '`'
 client = commands.Bot(command_prefix=prefix)
 client.remove_command('help')
 colours = cycle([0xFF0000, 0x00FF00, 0x0000FF0])
-game = cycle(['Hanime.tv', 'anime.tvH', 'nime.tvHa', 'ime.tvHan', 'me.tvHani', 'e.tvHanim', '.tvHanime',
+# game = cycle(['Hanime.tv', 'anime.tvH', 'nime.tvHa', 'ime.tvHan', 'me.tvHani', 'e.tvHanim', '.tvHanime',
               'tvHanime.', 'vHanime.t'])
 
 # --------------------------------------------------------------------------------------------------------------------
