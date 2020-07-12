@@ -382,7 +382,7 @@ async def on_member_remove(member):
 @client.event
 async def on_member_update(before, after):
     global Online_m
-    members_count_channel = client.get_channel(731755542229418046)
+    members_count_channel = client.get_channel(731402118438846484)
     print('1 - step')
     Online_m = '💚 Online: ' + str(
         sum([0 if member.status == discord.Status.offline else 1 for member in after.guild.members])) + ' 💚'
