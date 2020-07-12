@@ -5,10 +5,9 @@ from discord import utils
 import asyncio
 from Data import def_random, config, Gifs
 from itertools import cycle
-# import os
+import os
 
-# TOKEN = os.environ.get('TOKEN')
-TOKEN = 'NjY5OTQ0NDg5NzIwMTUyMDc2.XwquNg.XA2jUXEI3jbMasB632RREhjD82k'
+TOKEN = os.environ.get('TOKEN')
 prefix = '`'
 client = commands.Bot(command_prefix=prefix)
 client.remove_command('help')
