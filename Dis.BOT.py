@@ -6,10 +6,12 @@ import asyncio
 from Data import def_random, config, Gifs
 import os
 
-TOKEN = os.environ.get('TOKEN')
+# TOKEN = os.environ.get('TOKEN')
+TOKEN = 'NjY5OTQ0NDg5NzIwMTUyMDc2.XinSvg.uM9KXFIMt1HpqCRCUBXaWCiSQVU'
 prefix = '`'
 client = commands.Bot(command_prefix=prefix)
 client.remove_command('help')
+
 
 # --------------------------------------------------------------------------------------------------------------------
 # состояние бота
@@ -21,11 +23,13 @@ async def on_ready():
     game = discord.Game("Hanime.tv")
     await client.change_presence(status=discord.Status.idle, activity=game)
 
+
 # --------------------------------------------------------------------------------------------------------------------
 
 # Выдоча роли при добавлении реакции
 @client.event
 async def on_raw_reaction_add(payload):
+    global emoji
     channel = client.get_channel(config.TC_ID)
     message = await channel.fetch_message(payload.message_id)
     member = utils.get(message.guild.members, id=payload.user_id)
@@ -46,9 +50,11 @@ async def on_raw_reaction_add(payload):
     except Exception as e:
         print(repr(e))
 
+
 # Снятие роли при удалении реакции
 @client.event
 async def on_raw_reaction_remove(payload):
+    global emoji
     channel = client.get_channel(config.TC_ID)
     message = await channel.fetch_message(payload.message_id)
     member = utils.get(message.guild.members, id=payload.user_id)
@@ -61,9 +67,10 @@ async def on_raw_reaction_remove(payload):
         print('[SUCCESS] Role {1.name} has been remove for user {0.display_name}'.format(member, role))
 
     except KeyError:
-        print('[ERROR] KeyError, no role found for ')
+        print('[ERROR] KeyError, no role found for ' + emoji)
     except Exception as e:
         print(repr(e))
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -71,7 +78,7 @@ async def on_raw_reaction_remove(payload):
 # Выводит список доступных комманд [`help]
 @client.command()
 async def help(ctx):
-    emb = discord.Embed( title='Список доступных команд:')
+    emb = discord.Embed(title='Список доступных команд:')
 
     emb.add_field(name='{}help'.format(prefix), value='Выводит текущее окно', inline=False)
     emb.add_field(name='{}clear [кол-во сообщений]'.format(prefix), value='Очистка чата', inline=False)
@@ -96,6 +103,7 @@ async def help(ctx):
 async def clear(ctx, amount=10):
     await ctx.channel.purge(limit=1)
     await ctx.channel.purge(limit=amount)
+
 
 # Кик пользователя с сервера [`kick {пользователь}]
 @client.command()
@@ -129,15 +137,17 @@ async def kick(ctx, member: discord.Member, *, reason=None):
         await ctx.send(embed=emb_self_kick)
         print('[ERROR] {} try kick himself'.format(ctx.author))
 
+
 # бан пользователя на сервере [`ban {пользователь} {причина}]
 @client.command()
 @commands.has_permissions(administrator=True)
 async def ban(ctx, member: discord.Member, arg, *, reason):
     await ctx.channel.purge(limit=1)
-    
-    emb_t = discord.Embed(title='Функция "ban" временно недоступна!', color = discord.Color.red())
+
+    emb_t = discord.Embed(title='Функция "ban" временно недоступна!', color=discord.Color.red())
     await ctx.send(embed=emb_t)
-    
+
+
 """
     # сообщение которое будет отправлено в случае бана:
     # на сервер(в чат где была написана комманда)
@@ -205,6 +215,7 @@ async def ban(ctx, member: discord.Member, arg, *, reason):
         print('[ERROR] {} try ban himself'.format(ctx.author))
 """
 
+
 # Разбан пользователя на сервере [`unban {пользователь}]
 @client.command()
 @commands.has_permissions(administrator=True)
@@ -231,6 +242,7 @@ async def unban(ctx, *, member):
         await user.send(embed=emb_m)
         print('[SUCCESS] User {} has been unbaned by {}'.format(member, ctx.author))
         return
+
 
 # Запрещает пользователю писать в чат [`mute {пользователь} {причина}]
 @client.command()
@@ -279,6 +291,7 @@ async def unmute(ctx, member: discord.Member):
     await member.remove_roles(mute_role)
     await ctx.send(embed=emb)
 
+
 # добавляет роль пользователю [`g_role {пользователь}]
 @client.command()
 @commands.has_permissions(administrator=True)
@@ -293,6 +306,7 @@ async def g_role(ctx, member: discord.Member, *, reason=None):
     await member.add_roles(role_id)
     await ctx.send(embed=emb)
     print('[SUCCESS] User {} has been got role: {}'.format(member, reason))
+
 
 # снимает роль у пользователя [`g_role {пользователь}]
 @client.command()
@@ -329,14 +343,6 @@ async def mmm(ctx):
 
 
 @client.command()
-async def spam(ctx, member: discord.Member):
-    await ctx.channel.purge(limit=1)
-
-    for i in range(100):
-        await member.send("SPAAAAM!!!!!")
-
-
-@client.command()
 async def random(ctx, arg_1, arg_2):
     choice = def_random.random_num(int(arg_1), int(arg_2))
     await ctx.send(choice)
@@ -356,10 +362,42 @@ async def coin(ctx):
 #   приветствие нового пользователя (в лс)
 @client.event
 async def on_member_join(member):
-    guild = member.guild
+    guild = client.get_guild(340794764251365376)
     to_send = 'Привет {0.mention}, добро пожаловать на сервер {1.name}!\n \
 Чтобы узнать мои команды пропиши `help на сервере {1.name}'.format(member, guild)
     await member.send(to_send)
+
+    members_count_channel = client.get_channel(731381229349502976)
+    new_name = 'Members: ' + str(guild.member_count)
+    await discord.VoiceChannel.edit(members_count_channel, name=new_name)
+
+
+@client.event
+async def on_member_remove(member):
+    guild = client.get_guild(340794764251365376)
+    members_count_channel = client.get_channel(731381229349502976)
+    new_name = 'Members: ' + str(guild.member_count)
+    await discord.VoiceChannel.edit(members_count_channel, name=new_name)
+
+
+@client.event
+async def on_member_update(before, after):
+    global Online_m
+    members_count_channel = client.get_channel(731755542229418046)
+    print('1 - step')
+    Online_m = '💚 Online: ' + str(
+        sum([0 if member.status == discord.Status.offline else 1 for member in after.guild.members])) + ' 💚'
+    print('2 - step: ' + Online_m)
+    await members_count_channel.edit(name=Online_m)
+    print('end')
+
+
+@client.command()
+async def o(ctx):
+    members_count_channel = client.get_channel(731402118438846484)
+    await members_count_channel.edit(name=Online_m)
+    await ctx.send(Online_m)
+
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Errors
