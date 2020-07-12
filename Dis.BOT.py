@@ -1,26 +1,42 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 import datetime
 from discord import utils
 import asyncio
 from Data import def_random, config, Gifs
-import os
+from itertools import cycle
+# import os
 
-TOKEN = os.environ.get('TOKEN')
+# TOKEN = os.environ.get('TOKEN')
+TOKEN = 'NjY5OTQ0NDg5NzIwMTUyMDc2.XwquNg.XA2jUXEI3jbMasB632RREhjD82k'
 prefix = '`'
 client = commands.Bot(command_prefix=prefix)
 client.remove_command('help')
-
+colours = cycle([0xFF0000, 0x00FF00, 0x0000FF0])
+game = cycle(['Hanime.tv', 'anime.tvH', 'nime.tvHa', 'ime.tvHan', 'me.tvHani', 'e.tvHanim', '.tvHanime',
+              'tvHanime.', 'vHanime.t', 'Hanime.tv'])
 
 # --------------------------------------------------------------------------------------------------------------------
 # состояние бота
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
+    status.start()
+    # изменяет статус бота
+    # game = discord.Game("Hanime.tv")
+    # await client.change_presence(status=discord.Status.idle, activity=game)
 
-    # изменяет статус боту
-    game = discord.Game("Hanime.tv")
-    await client.change_presence(status=discord.Status.idle, activity=game)
+
+@tasks.loop(seconds=1)
+async def status():
+    await client.change_presence(status=discord.Status.idle, activity=discord.Game(next(game)))
+
+
+@tasks.loop(seconds=1)
+async def _rain():
+    server = client.get_guild(340794764251365376)
+    role = discord.utils.get(server.roles, name='RainBow')
+    await role.edit(server=server, colour=discord.Colour(next(colours)))
 
 
 # --------------------------------------------------------------------------------------------------------------------
@@ -366,26 +382,34 @@ async def on_member_join(member):
 Чтобы узнать мои команды пропиши `help на сервере {1.name}'.format(member, guild)
     await member.send(to_send)
 
-    members_count_channel = client.get_channel(731381229349502976)
-    new_name = 'Members: ' + str(guild.member_count)
-    await discord.VoiceChannel.edit(members_count_channel, name=new_name)
-
-
-@client.event
-async def on_member_remove(member):
-    guild = client.get_guild(340794764251365376)
-    members_count_channel = client.get_channel(731381229349502976)
-    new_name = 'Members: ' + str(guild.member_count)
-    await discord.VoiceChannel.edit(members_count_channel, name=new_name)
-
 
 @client.event
 async def on_member_update(before, after):
-    Online_m = '💚 Online: ' + str(
-        sum([0 if member.status == discord.Status.offline else 1 for member in after.guild.members])) + ' 💚'
+    guild = client.get_guild(340794764251365376)
+    new_name = 'Members: ' + str(guild.member_count)
+    All_Online_m = str(
+        sum([0 if member.status == discord.Status.offline else 1 for member in after.guild.members])
+    )
+    Online_m = '🟢 ' + str(
+        sum([0 if member.status == discord.Status.offline else 1 for member in after.guild.members]) -
+        sum([1 if member.status == discord.Status.idle else 0 for member in after.guild.members]) -
+        sum([1 if member.status == discord.Status.dnd else 0 for member in after.guild.members])
+    )
+    Idle_m = '🌙 ' + str(
+        sum([1 if member.status == discord.Status.idle else 0 for member in after.guild.members])
+    )
+    Dnd_m = '🔴 ' + str(
+        sum([1 if member.status == discord.Status.dnd else 0 for member in after.guild.members])
+    )
     members_count_channel = client.get_channel(731773383519502356)
-    message = await members_count_channel.fetch_message(731775266921250818)
-    await message.edit(content=Online_m)
+    message = await members_count_channel.fetch_message(731834241750663258)
+    emb = discord.Embed(title=config.stik_SERVER, color=discord.Color.purple())
+    emb.set_image(url='https://cdn.dribbble.com/users/463836/screenshots/1974085/gif.dream.gif')
+    emb.add_field(name=config.stik_ONLINE, value='-----------|==> ' + Online_m + '\n\
+Всего: ' + All_Online_m + '|==> ' + Idle_m + '\n\
+-----------|==> ' + Dnd_m, inline=False)
+    emb.add_field(name=config.stik_MEMBERS_COUNT, value=new_name, inline=False)
+    await message.edit(embed=emb)
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -427,3 +451,4 @@ async def r_role_err(ctx, error):
 # ---------------------------------------------------------------------------------------------------------------------
 
 client.run(str(TOKEN))
+
