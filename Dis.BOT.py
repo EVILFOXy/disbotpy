@@ -11,32 +11,26 @@ TOKEN = os.environ.get('TOKEN')
 prefix = '`'
 client = commands.Bot(command_prefix=prefix)
 client.remove_command('help')
-colours = cycle([0xFF0000, 0x00FF00, 0x0000FF0])
-# game = cycle(['Hanime.tv', 'anime.tvH', 'nime.tvHa', 'ime.tvHan', 'me.tvHani', 'e.tvHanim', '.tvHanime',
-              'tvHanime.', 'vHanime.t'])
+colours = cycle([0xFF0000, 0xFF7F00, 0xFFFF00, 0x00FF00, 0x0000FF, 0x8F00FF])
+
 
 # --------------------------------------------------------------------------------------------------------------------
 # состояние бота
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
-    # status.start()
-    # _rain.start()
+    _rain.start()
     # изменяет статус бота
     game = discord.Game("Hanime.tv")
     await client.change_presence(status=discord.Status.idle, activity=game)
 
 
 @tasks.loop(seconds=1)
-async def status():
-    await client.change_presence(status=discord.Status.idle, activity=discord.Game(next(game)))
-
-
-@tasks.loop(seconds=1)
 async def _rain():
     server = client.get_guild(340794764251365376)
+    channel = client.get_channel(732173473102692412)
     role = discord.utils.get(server.roles, name='RainBow')
-    await role.edit(server=server, colour=discord.Colour(next(colours)))
+    await role.edit(server=server, role=role, colour=discord.Colour(next(colours)))
 
 
 # --------------------------------------------------------------------------------------------------------------------
