@@ -28,7 +28,7 @@ async def on_ready():
 @tasks.loop(seconds=1)
 async def _rain():
     server = client.get_guild(340794764251365376)
-    channel = client.get_channel(732173473102692412)
+    channel = client.get_channel(729998715204534272)
     role = discord.utils.get(server.roles, name='RainBow')
     await role.edit(server=server, role=role, colour=discord.Colour(next(colours)))
 
