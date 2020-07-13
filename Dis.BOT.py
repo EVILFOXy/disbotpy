@@ -11,7 +11,6 @@ TOKEN = os.environ.get('TOKEN')
 prefix = '`'
 client = commands.Bot(command_prefix=prefix)
 client.remove_command('help')
-colours = cycle([0xFF0000, 0xFF7F00, 0xFFFF00, 0x00FF00, 0x0000FF, 0x8F00FF])
 
 
 # --------------------------------------------------------------------------------------------------------------------
