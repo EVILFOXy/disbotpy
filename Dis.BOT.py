@@ -19,19 +19,9 @@ colours = cycle([0xFF0000, 0xFF7F00, 0xFFFF00, 0x00FF00, 0x0000FF, 0x8F00FF])
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
-    _rain.start()
     # изменяет статус бота
     game = discord.Game("Hanime.tv")
     await client.change_presence(status=discord.Status.idle, activity=game)
-
-
-@tasks.loop(seconds=1)
-async def _rain():
-    server = client.get_guild(340794764251365376)
-    channel = client.get_channel(729998715204534272)
-    role = discord.utils.get(server.roles, name='RainBow')
-    await channel.send(next(colours))
-    await role.edit(server=server, role=role, colour=discord.Colour(next(colours)))
 
 
 # --------------------------------------------------------------------------------------------------------------------
