@@ -19,8 +19,8 @@ client.remove_command('help')
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
     # изменяет статус бота
-    game = discord.Game("Hanime.tv")
-    await client.change_presence(status=discord.Status.idle, activity=game)
+    activ = discord.Activity(name="Хентай", type=discord.ActivityType.watching)
+    await client.change_presence(status=discord.Status.online, activity=activ)
 
 
 # --------------------------------------------------------------------------------------------------------------------
