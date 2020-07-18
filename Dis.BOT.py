@@ -18,7 +18,7 @@ client.remove_command('help')
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
-    # изменяет статус бота
+    # изменяет статус бота в ActivityType(playing, streaming(с указанием на url), listening, watching, custom)
     activ = discord.Activity(name="Хентай", type=discord.ActivityType.watching)
     await client.change_presence(status=discord.Status.online, activity=activ)
 
