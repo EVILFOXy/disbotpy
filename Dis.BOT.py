@@ -37,12 +37,23 @@ async def on_raw_reaction_add(payload):
         emoji = str(payload.emoji)  # эмоджик который выбрал юзер
         role = utils.get(message.guild.roles, id=config.ROLES[emoji])  # объект выбранной роли (если есть)
 
-        if len([i for i in member.roles if i.id not in config.EXCROLES]) <= config.MAX_ROLES_PER_USER:
-            await member.add_roles(role)
-            print('[SUCCESS] User {0.display_name} has been granted with role {1.name}'.format(member, role))
-        else:
-            await message.remove_reaction(payload.emoji, member)
-            print('[ERROR] Too many roles for user {0.display_name}'.format(member))
+        if emoji in config.Colors_emoji:
+
+            if len([i for i in member.roles if i.id not in config.EXCROLES_for_color]) <= config.MAX_ROLES_PER_USER:
+                await member.add_roles(role)
+                print('[SUCCESS] User {0.display_name} has been granted with role {1.name}'.format(member, role))
+            else:
+                await message.remove_reaction(payload.emoji, member)
+                print('[ERROR] Too many roles for user {0.display_name}'.format(member))
+
+        if emoji in config.alliance_emoji:
+
+            if len([i for i in member.roles if i.id not in config.EXCROLES_for_alliance]) <= config.MAX_ROLES_PER_USER:
+                await member.add_roles(role)
+                print('[SUCCESS] User {0.display_name} has been granted with role {1.name}'.format(member, role))
+            else:
+                await message.remove_reaction(payload.emoji, member)
+                print('[ERROR] Too many roles for user {0.display_name}'.format(member))
 
     except KeyError:
         print('[ERROR] KeyError, no role found for ' + emoji)
@@ -370,7 +381,10 @@ async def on_member_join(member):
 @client.event
 async def on_member_update(before, after):
     guild = client.get_guild(340794764251365376)
+    members_count_channel_1 = client.get_channel(731381229349502976)
     new_name = 'Members: ' + str(guild.member_count)
+    await members_count_channel_1.edit(name=new_name)
+
     All_Online_m = str(
         sum([0 if member.status == discord.Status.offline else 1 for member in after.guild.members])
     )
@@ -379,21 +393,19 @@ async def on_member_update(before, after):
         sum([1 if member.status == discord.Status.idle else 0 for member in after.guild.members]) -
         sum([1 if member.status == discord.Status.dnd else 0 for member in after.guild.members])
     )
-    Idle_m = '🌙 ' + str(
+    Idle_m = ' 🌙 ' + str(
         sum([1 if member.status == discord.Status.idle else 0 for member in after.guild.members])
     )
-    Dnd_m = '🔴 ' + str(
+    Dnd_m = ' 🔴 ' + str(
         sum([1 if member.status == discord.Status.dnd else 0 for member in after.guild.members])
     )
-    members_count_channel = client.get_channel(731773383519502356)
-    message = await members_count_channel.fetch_message(731834241750663258)
-    emb = discord.Embed(title=config.stik_SERVER, color=discord.Color.purple())
-    emb.set_image(url='https://cdn.dribbble.com/users/463836/screenshots/1974085/gif.dream.gif')
-    emb.add_field(name=config.stik_ONLINE, value='-----------|==> ' + Online_m + '\n\
-Всего: ' + All_Online_m + '|==> ' + Idle_m + '\n\
------------|==> ' + Dnd_m, inline=False)
-    emb.add_field(name=config.stik_MEMBERS_COUNT, value=new_name, inline=False)
-    await message.edit(embed=emb)
+
+    members_online_channel = client.get_channel(751655191232905266)
+    await members_online_channel.edit(name='All: ' + All_Online_m + ' => ' + Online_m + Idle_m + Dnd_m)
+
+    now = datetime.datetime.now()
+    Data_channel = client.get_channel(751659231823921162)
+    await Data_channel.edit(name='📅' + str(now.strftime("%d-%m-%Y")))
 
 
 # ---------------------------------------------------------------------------------------------------------------------
