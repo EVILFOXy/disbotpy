@@ -385,9 +385,6 @@ async def on_member_update(before, after):
     new_name = 'Members: ' + str(guild.member_count)
     await members_count_channel_1.edit(name=new_name)
 
-    All_Online_m = str(
-        sum([0 if member.status == discord.Status.offline else 1 for member in after.guild.members])
-    )
     Online_m = '🟢 ' + str(
         sum([0 if member.status == discord.Status.offline else 1 for member in after.guild.members]) -
         sum([1 if member.status == discord.Status.idle else 0 for member in after.guild.members]) -
@@ -401,7 +398,7 @@ async def on_member_update(before, after):
     )
 
     members_online_channel = client.get_channel(751655191232905266)
-    await members_online_channel.edit(name='All: ' + All_Online_m + ' => ' + Online_m + Idle_m + Dnd_m)
+    await members_online_channel.edit(name=Online_m + Idle_m + Dnd_m)
 
     now = datetime.datetime.now()
     Data_channel = client.get_channel(751659231823921162)
