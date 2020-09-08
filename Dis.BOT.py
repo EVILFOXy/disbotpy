@@ -403,6 +403,9 @@ async def on_member_update(before, after):
     now = datetime.datetime.now()
     Data_channel = client.get_channel(751659231823921162)
     await Data_channel.edit(name='📅' + str(now.strftime("%d-%m-%Y")))
+    
+    Data_channel_2 = client.get_channel(731773383519502356)
+    await Data_channel_2.edit(name='⏲️' + str(now.strftime("%H-%M-%S")))
 
 
 # ---------------------------------------------------------------------------------------------------------------------
