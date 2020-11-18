@@ -44,7 +44,7 @@ async def on_raw_reaction_add(payload):
                 print('[SUCCESS] User {0.display_name} has been granted with role {1.name}'.format(member, role))
             else:
                 await message.remove_reaction(payload.emoji, member)
-                print('[ERROR] Too many roles for user {0.display_name}'.format(member))
+                print('[ERROR] Too many roles for user {0.display_name}'.format(member) + '1')
 
         if emoji in config.alliance_emoji:
 
@@ -53,7 +53,7 @@ async def on_raw_reaction_add(payload):
                 print('[SUCCESS] User {0.display_name} has been granted with role {1.name}'.format(member, role))
             else:
                 await message.remove_reaction(payload.emoji, member)
-                print('[ERROR] Too many roles for user {0.display_name}'.format(member))
+                print('[ERROR] Too many roles for user {0.display_name}'.format(member)+ '2')
 
     except KeyError:
         print('[ERROR] KeyError, no role found for ' + emoji)
