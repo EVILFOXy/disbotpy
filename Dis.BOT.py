@@ -407,6 +407,9 @@ async def on_member_update(before, after):
     Data_channel_2 = client.get_channel(731773383519502356)
     await Data_channel_2.edit(name='⏲️' + str(now.strftime("%H-%M-%S")))
     print('⏲️' + str(now.strftime("%H-%M-%S")))
+    
+    await asyncio.sleep(429)
+    
 
 
 # ---------------------------------------------------------------------------------------------------------------------
